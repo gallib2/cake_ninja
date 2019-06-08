@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SlicesManager : MonoBehaviour
 {
-    public int goal = 4;
+    public int goal;
     private int minmumSize;
 
     public double originalSize = 0;
@@ -13,16 +13,22 @@ public class SlicesManager : MonoBehaviour
 
     public int sliced = 0;
 
+    public GameObject cake;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        goal = GameManager.currentGoal;
+
+        Debug.Log("Goal is: " + goal);
     }
 
     // Update is called once per frame
     void Update()
     {
         int slicesCount = Slicer2D.GetList().Count;
+
+        goal = GameManager.currentGoal;
 
         if (slicesCount == goal)
         {
@@ -33,9 +39,19 @@ public class SlicesManager : MonoBehaviour
             if(isAllSlicesEqual)
             {
                 Debug.Log("all slices the same, move to next level ");
-                // next level 
+
+                GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
+
+                foreach (Transform item in sliceableObjects.transform)
+                {
+                    Destroy(item.gameObject);
+                }
+
+                Instantiate(cake, sliceableObjects.transform, true);
+
+                GameManager.NextLevel();
             }
-        } 
+        }
     }
 
     bool IsAllSlicesAreAlmostEqual()
