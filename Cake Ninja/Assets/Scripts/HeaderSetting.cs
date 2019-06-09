@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class HeaderSetting : MonoBehaviour
 {
-    public GameObject prefab;
+    //public GameObject prefab;
+    public GameObject[] prefabs;
     int goal;
+    int score;
 
     // Start is called before the first frame update
     void Start()
@@ -25,25 +27,37 @@ public class HeaderSetting : MonoBehaviour
             goal = GameManager.currentGoal;
             ChangeText();
         }
+
+        if (score != GameManager.score)
+        {
+            score = GameManager.score;
+            ChangeText();
+        }
     }
 
     void ChangeText()
     {
-        foreach (var item in prefab.GetComponentsInChildren<Text>())
+        Debug.Log("prefabs.Length " + prefabs.Length);
+
+
+        for (int i = 0; i < prefabs.Length; i++)
         {
-            switch (item.name)
+            foreach (var item in prefabs[i].GetComponentsInChildren<Text>())
             {
-                case "Score":
-                    item.text = "Score: " + 0; // TODO G add score
-                    break;
-                case "Goal":
-                    item.text = "Goal: " + goal;
-                    break;
-                case "Timer":
-                    item.text = "Timer: " + 10; // TODO G add timer
-                    break;
-                default:
-                    break;
+                switch (item.name)
+                {
+                    case "Score":
+                        item.text = "Score: " + score; // TODO G add score
+                        break;
+                    case "Goal":
+                        item.text = "Goal: " + goal;
+                        break;
+                    case "Timer":
+                        item.text = "Timer: " + 10; // TODO G add timer
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

@@ -8,12 +8,13 @@ public class SlicesManager : MonoBehaviour
     public int goal;
     private int minmumSize;
 
-    public double originalSize = 0;
-    public double currentSize = 0;
-
-    public int sliced = 0;
+    private double originalSize = 0;
+    private int sliced = 0;
 
     public GameObject cake;
+    public GameObject gameOverScreenPrefub;
+
+    //private bool isGameOver = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,7 @@ public class SlicesManager : MonoBehaviour
 
         goal = GameManager.currentGoal;
 
-        if (slicesCount == goal)
+        if (slicesCount == goal) // TODO g to check only if the user was slice...
         {
             bool isAllSlicesEqual = IsAllSlicesAreAlmostEqual();
 
@@ -42,15 +43,28 @@ public class SlicesManager : MonoBehaviour
 
                 GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
 
-                foreach (Transform item in sliceableObjects.transform)
-                {
-                    Destroy(item.gameObject);
-                }
-
-                Instantiate(cake, sliceableObjects.transform, true);
+                DestroyAllLeftPieces(sliceableObjects);
+                Instantiate(cake, sliceableObjects.transform, true); // create new cake
 
                 GameManager.NextLevel();
             }
+            else if (!isAllSlicesEqual && !GameManager.isGameOver)
+            {
+                GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
+
+                //isGameOver = true;
+                DestroyAllLeftPieces(sliceableObjects);
+                GameObject gameOverScreenPrefubCopy = Instantiate(gameOverScreenPrefub);
+                GameManager.GameOver(gameOverScreenPrefubCopy);
+            }
+        }
+    }
+
+    void DestroyAllLeftPieces(GameObject sliceableObjects)
+    {
+        foreach (Transform item in sliceableObjects.transform)
+        {
+            Destroy(item.gameObject);
         }
     }
 
