@@ -54,8 +54,8 @@ public class SlicesManager : MonoBehaviour
 
                 //isGameOver = true;
                 DestroyAllLeftPieces(sliceableObjects);
-                GameObject gameOverScreenPrefubCopy = Instantiate(gameOverScreenPrefub);
-                GameManager.GameOver(gameOverScreenPrefubCopy);
+                Instantiate(gameOverScreenPrefub);
+                GameManager.GameOver();
             }
         }
     }

@@ -47,12 +47,12 @@ public class GameManager : MonoBehaviour
         score = goals.Count - 1;
     }
 
-    public static void GameOver(GameObject _gameOverScreenPrefub)
+    public static void GameOver()
     {
         isGameOver = true;
 
         Debug.Log("gameOverScreenPrefub GameOver: ", gameOverScreenPrefub);
-        gameOverScreenPrefub = _gameOverScreenPrefub;
+        //gameOverScreenPrefub = _gameOverScreenPrefub;
     }
 
     public void PlayAgain()
@@ -64,9 +64,9 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("gameOverScreenPrefub PlayAgain: ", gameOverScreenPrefub);
 
-        if (gameOverScreenPrefub != null)
-        {
-            Destroy(gameOverScreenPrefub.gameObject);
-        }
+        //if (gameOverScreenPrefub != null)
+        //{
+        //    Destroy(gameOverScreenPrefub.gameObject);
+        //}
     }
 }
