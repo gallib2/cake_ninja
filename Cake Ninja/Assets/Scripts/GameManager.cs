@@ -1,16 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static event Action OnNextLevel;
+
     public static List<int> goals = new List<int>();
     public static int currentGoal;
     public static int score = 0;
     public static bool isGameOver = false;
-
-    static GameObject gameOverScreenPrefub;
 
     static public GameManager instance;
 
@@ -22,19 +23,28 @@ public class GameManager : MonoBehaviour
         StartGameSettings();
     }
 
+    private void OnDisable()
+    {
+        score = 0;
+        isGameOver = false;
+        goals.Clear();
+    }
+
     private void StartGameSettings()
     {
+        Debug.Log("start game settings");
         goals.Add(2);
         currentGoal = goals.Last();
         score = 0;
-        gameOverScreenPrefub = null;
     }
 
     public static void NextLevel()
     {
+        Debug.Log("--------------in next level ");
+
         int nextGoal;
         //bool isNumberExistInGoals = false;
-        nextGoal = Random.Range(4, 6);
+        nextGoal = UnityEngine.Random.Range(4, 6);
         bool isGoalOdd = nextGoal % 2 != 0;
         if (isGoalOdd)
         {
@@ -45,13 +55,14 @@ public class GameManager : MonoBehaviour
 
         currentGoal = goals.Last();
         score = goals.Count - 1;
+
+        OnNextLevel?.Invoke();
     }
 
     public static void GameOver()
     {
         isGameOver = true;
 
-        Debug.Log("gameOverScreenPrefub GameOver: ", gameOverScreenPrefub);
         //gameOverScreenPrefub = _gameOverScreenPrefub;
     }
 
@@ -60,9 +71,9 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
         goals.Clear();
 
-        StartGameSettings();
+        Debug.Log("goals " + goals.Count);
 
-        Debug.Log("gameOverScreenPrefub PlayAgain: ", gameOverScreenPrefub);
+        StartGameSettings();
 
         //if (gameOverScreenPrefub != null)
         //{

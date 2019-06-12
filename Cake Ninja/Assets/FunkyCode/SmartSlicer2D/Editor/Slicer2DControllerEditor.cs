@@ -9,6 +9,8 @@ public class Slicer2DControllerEditor : Editor{
 
 	override public void OnInspectorGUI()
 	{
+        // Debug.Log("sliced !!!!!! ");
+
 		Slicer2DController script = target as Slicer2DController;
 		script.sliceType = (Slicer2DController.SliceType)EditorGUILayout.EnumPopup ("Slicer Type", script.sliceType);
 		script.sliceLayer.SetLayerType((Slice2DLayerType)EditorGUILayout.EnumPopup ("Slicer Layer", script.sliceLayer.GetLayerType()));

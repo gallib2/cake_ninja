@@ -14,22 +14,25 @@ public class SlicesManager : MonoBehaviour
     public GameObject cake;
     public GameObject gameOverScreenPrefub;
 
-    //private bool isGameOver = false;
+    GameObject sliceableObjects;
+
+    public int slicesCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
         goal = GameManager.currentGoal;
 
         Debug.Log("Goal is: " + goal);
     }
 
-    // Update is called once per frame
-    void Update()
+    void CheckSlices()
     {
-        int slicesCount = Slicer2D.GetList().Count;
+        slicesCount = sliceableObjects.GetComponentsInChildren<Transform>().Length - 1;
 
         goal = GameManager.currentGoal;
+        Debug.Log("slices: " + slicesCount + " goal: " + goal);
 
         if (slicesCount == goal) // TODO g to check only if the user was slice...
         {
@@ -37,30 +40,66 @@ public class SlicesManager : MonoBehaviour
 
             Debug.Log("isAllSlicesEqual: " + isAllSlicesEqual);
 
-            if(isAllSlicesEqual)
+            if (isAllSlicesEqual)
             {
                 Debug.Log("all slices the same, move to next level ");
 
-                GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
-
-                DestroyAllLeftPieces(sliceableObjects);
+                DestroyAllLeftPieces();
                 Instantiate(cake, sliceableObjects.transform, true); // create new cake
 
                 GameManager.NextLevel();
             }
             else if (!isAllSlicesEqual && !GameManager.isGameOver)
             {
-                GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
-
-                //isGameOver = true;
-                DestroyAllLeftPieces(sliceableObjects);
+                DestroyAllLeftPieces();
                 Instantiate(gameOverScreenPrefub);
                 GameManager.GameOver();
+                Instantiate(cake, sliceableObjects.transform, true);
             }
         }
     }
 
-    void DestroyAllLeftPieces(GameObject sliceableObjects)
+    // Update is called once per frame
+    void Update()
+    {
+        CheckSlices();
+        // int slicesCount = Slicer2D.GetList().Count;
+
+        //goal = GameManager.currentGoal;
+
+        //// Debug.Log("slices: " + slicesCount + " goal: " + goal);
+
+        //if (slicesCount == goal) // TODO g to check only if the user was slice...
+        //{
+        //    bool isAllSlicesEqual = IsAllSlicesAreAlmostEqual();
+
+        //    Debug.Log("isAllSlicesEqual: " + isAllSlicesEqual);
+
+        //    if(isAllSlicesEqual)
+        //    {
+        //        Debug.Log("all slices the same, move to next level ");
+
+        //        GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
+
+        //        DestroyAllLeftPieces(sliceableObjects);
+        //        Instantiate(cake, sliceableObjects.transform, true); // create new cake
+
+        //        GameManager.NextLevel();
+        //    }
+        //    else if (!isAllSlicesEqual && !GameManager.isGameOver)
+        //    {
+        //        GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
+
+        //        //isGameOver = true;
+        //        DestroyAllLeftPieces(sliceableObjects);
+        //        Instantiate(gameOverScreenPrefub);
+        //        GameManager.GameOver();
+        //        Instantiate(cake, sliceableObjects.transform, true);
+        //    }
+        //}
+    }
+
+    void DestroyAllLeftPieces(/*GameObject sliceableObjects*/)
     {
         foreach (Transform item in sliceableObjects.transform)
         {
