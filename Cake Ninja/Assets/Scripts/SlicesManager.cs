@@ -32,7 +32,7 @@ public class SlicesManager : MonoBehaviour
         slicesCount = sliceableObjects.GetComponentsInChildren<Transform>().Length - 1;
 
         goal = GameManager.currentGoal;
-        Debug.Log("slices: " + slicesCount + " goal: " + goal);
+        // Debug.Log("slices: " + slicesCount + " goal: " + goal);
 
         if (slicesCount == goal) // TODO g to check only if the user was slice...
         {
@@ -51,12 +51,25 @@ public class SlicesManager : MonoBehaviour
             }
             else if (!isAllSlicesEqual && !GameManager.isGameOver)
             {
-                DestroyAllLeftPieces();
-                Instantiate(gameOverScreenPrefub);
-                GameManager.GameOver();
-                Instantiate(cake, sliceableObjects.transform, true);
+                GameOver();
+                //DestroyAllLeftPieces();
+                //Instantiate(gameOverScreenPrefub);
+                //GameManager.GameOver();
+                //Instantiate(cake, sliceableObjects.transform, true);
             }
         }
+        else if (slicesCount > goal)
+        {
+            GameOver();
+        }
+    }
+
+    void GameOver()
+    {
+        DestroyAllLeftPieces();
+        Instantiate(gameOverScreenPrefub);
+        GameManager.GameOver();
+        Instantiate(cake, sliceableObjects.transform, true);
     }
 
     // Update is called once per frame
@@ -130,6 +143,7 @@ public class SlicesManager : MonoBehaviour
 
             originalSize = slicer.GetComponent<DemoSlicer2DInspectorTracker>().originalSize;
             int currentSizeInt = (int)poly.GetArea();
+            Debug.Log("current size : " + currentSizeInt);
             slicesSizeList.Add(currentSizeInt);
 
             sliced = slicer.sliceCounter;
