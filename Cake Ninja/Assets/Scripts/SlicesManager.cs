@@ -11,7 +11,8 @@ public class SlicesManager : MonoBehaviour
     private double originalSize = 0;
     private int sliced = 0;
 
-    public GameObject cake;
+    //public GameObject cake;
+    public GameObject[] cakes;
     public GameObject gameOverScreenPrefub;
 
     GameObject sliceableObjects;
@@ -45,6 +46,7 @@ public class SlicesManager : MonoBehaviour
                 Debug.Log("all slices the same, move to next level ");
 
                 DestroyAllLeftPieces();
+                GameObject cake = GetRandomCake();
                 Instantiate(cake, sliceableObjects.transform, true); // create new cake
 
                 GameManager.NextLevel();
@@ -52,10 +54,6 @@ public class SlicesManager : MonoBehaviour
             else if (!isAllSlicesEqual && !GameManager.isGameOver)
             {
                 GameOver();
-                //DestroyAllLeftPieces();
-                //Instantiate(gameOverScreenPrefub);
-                //GameManager.GameOver();
-                //Instantiate(cake, sliceableObjects.transform, true);
             }
         }
         else if (slicesCount > goal)
@@ -69,6 +67,7 @@ public class SlicesManager : MonoBehaviour
         DestroyAllLeftPieces();
         Instantiate(gameOverScreenPrefub);
         GameManager.GameOver();
+        GameObject cake = GetRandomCake();
         Instantiate(cake, sliceableObjects.transform, true);
     }
 
@@ -76,40 +75,6 @@ public class SlicesManager : MonoBehaviour
     void Update()
     {
         CheckSlices();
-        // int slicesCount = Slicer2D.GetList().Count;
-
-        //goal = GameManager.currentGoal;
-
-        //// Debug.Log("slices: " + slicesCount + " goal: " + goal);
-
-        //if (slicesCount == goal) // TODO g to check only if the user was slice...
-        //{
-        //    bool isAllSlicesEqual = IsAllSlicesAreAlmostEqual();
-
-        //    Debug.Log("isAllSlicesEqual: " + isAllSlicesEqual);
-
-        //    if(isAllSlicesEqual)
-        //    {
-        //        Debug.Log("all slices the same, move to next level ");
-
-        //        GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
-
-        //        DestroyAllLeftPieces(sliceableObjects);
-        //        Instantiate(cake, sliceableObjects.transform, true); // create new cake
-
-        //        GameManager.NextLevel();
-        //    }
-        //    else if (!isAllSlicesEqual && !GameManager.isGameOver)
-        //    {
-        //        GameObject sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
-
-        //        //isGameOver = true;
-        //        DestroyAllLeftPieces(sliceableObjects);
-        //        Instantiate(gameOverScreenPrefub);
-        //        GameManager.GameOver();
-        //        Instantiate(cake, sliceableObjects.transform, true);
-        //    }
-        //}
     }
 
     void DestroyAllLeftPieces(/*GameObject sliceableObjects*/)
@@ -150,5 +115,13 @@ public class SlicesManager : MonoBehaviour
         }
 
         return slicesSizeList;
+    }
+
+    GameObject GetRandomCake()
+    {
+        int maxIndex = cakes.Length;
+        int index = Random.Range(0, maxIndex);
+
+        return cakes[index];
     }
 }
