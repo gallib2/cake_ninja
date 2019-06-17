@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
         goals.Add(2);
         currentGoal = goals.Last();
         score = 0;
+        OnNextLevel?.Invoke();
     }
 
     public static void NextLevel()
@@ -62,7 +63,6 @@ public class GameManager : MonoBehaviour
     public static void GameOver()
     {
         isGameOver = true;
-
         //gameOverScreenPrefub = _gameOverScreenPrefub;
     }
 
@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("goals " + goals.Count);
 
         StartGameSettings();
+
 
         //if (gameOverScreenPrefub != null)
         //{
