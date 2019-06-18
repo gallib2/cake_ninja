@@ -11,6 +11,7 @@ public class HeaderSetting : MonoBehaviour
     public GameObject[] prefabs;
     public Text scoreText;
     public Text goalText;
+
     int goal;
     int score;
 
@@ -42,6 +43,8 @@ public class HeaderSetting : MonoBehaviour
 
     private void NextLevel()
     {
+        Debug.Log("GameManager.score" + GameManager.score);
+
         goalText.text = "Goal: " + GameManager.currentGoal.ToString();
         scoreText.text = "Score: " + GameManager.score.ToString();
 

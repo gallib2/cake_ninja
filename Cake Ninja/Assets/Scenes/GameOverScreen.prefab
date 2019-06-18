@@ -301,6 +301,7 @@ GameObject:
   - component: {fileID: 3765943968393477971}
   - component: {fileID: 3765943968393477970}
   - component: {fileID: 6023891149594477902}
+  - component: {fileID: 2611232983456279701}
   m_Layer: 5
   m_Name: GameOverScreen
   m_TagString: Untagged
@@ -400,6 +401,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dc2edc316de1487db53f122662f7b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2611232983456279701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3765943968393477968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994816c2b26da49d0a3b7f98e023c486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabs: []
+  scoreText: {fileID: 3765943969509317833}
+  goalText: {fileID: 3765943968521829871}
 --- !u!1 &3765943968450892269
 GameObject:
   m_ObjectHideFlags: 0

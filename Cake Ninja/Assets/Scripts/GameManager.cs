@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public static event Action OnNextLevel;
 
+    //TimerHelper timer;
+    //float timerRequired = 1f;
+
     public static List<int> goals = new List<int>();
     public static int currentGoal;
     public static int score = 0;
@@ -19,6 +22,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         instance = this;
+        //timer = TimerHelper.Create();
 
         StartGameSettings();
     }
@@ -37,6 +41,13 @@ public class GameManager : MonoBehaviour
         currentGoal = goals.Last();
         score = 0;
         OnNextLevel?.Invoke();
+    }
+
+    private void Update()
+    {
+
+
+
     }
 
     public static void NextLevel()
@@ -63,6 +74,7 @@ public class GameManager : MonoBehaviour
     public static void GameOver()
     {
         isGameOver = true;
+        OnNextLevel?.Invoke();
         //gameOverScreenPrefub = _gameOverScreenPrefub;
     }
 

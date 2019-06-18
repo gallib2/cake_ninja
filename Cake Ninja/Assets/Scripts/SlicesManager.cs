@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SlicesManager : MonoBehaviour
 {
     public int goal;
     private int minmumSize;
+
+    public Text timerText;
+
+    TimerHelper timer;
+    float timerRequired = 1f;
+    bool toStopTimer = false;
 
     private double originalSize = 0;
     private int sliced = 0;
@@ -25,7 +32,39 @@ public class SlicesManager : MonoBehaviour
         sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
         goal = GameManager.currentGoal;
 
+        timer = TimerHelper.Create();
+
         Debug.Log("Goal is: " + goal);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        int timerOpp = 5 - (int)timer.Get();
+
+        timerText.text = "Timer: " + timerOpp;
+
+        if (!toStopTimer && timerOpp < 0)
+        {
+            Debug.Log("times up! ");
+            GameOver();
+            toStopTimer = true;
+        }
+        else
+        {
+            CheckSlices();
+        }
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnNextLevel += NextLevel;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnNextLevel -= NextLevel;
+
     }
 
     void CheckSlices()
@@ -59,8 +98,16 @@ public class SlicesManager : MonoBehaviour
         else if (slicesCount > goal)
         {
             GameOver();
+
         }
     }
+
+    void NextLevel() 
+    {
+        toStopTimer = false;
+        timer = TimerHelper.Create();
+    }
+
 
     void GameOver()
     {
@@ -69,12 +116,6 @@ public class SlicesManager : MonoBehaviour
         GameManager.GameOver();
         GameObject cake = GetRandomCake();
         Instantiate(cake, sliceableObjects.transform, true);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        CheckSlices();
     }
 
     void DestroyAllLeftPieces(/*GameObject sliceableObjects*/)

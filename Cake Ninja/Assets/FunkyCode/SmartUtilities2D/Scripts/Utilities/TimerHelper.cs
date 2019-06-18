@@ -27,4 +27,9 @@ public class TimerHelper {
 	{
 		return((Time.realtimeSinceStartup - time));
 	}
+
+    public float Stop()
+    {
+        return 0;
+    }
 }
