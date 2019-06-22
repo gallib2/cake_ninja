@@ -10,6 +10,7 @@ public class SlicesManager : MonoBehaviour
     public Slider sliderTimer;
     public int goal;
     private int minmumSize;
+    public ParticleSystem particlesEndLevel;
 
     public Text timerText;
 
@@ -109,6 +110,7 @@ public class SlicesManager : MonoBehaviour
 
     void NextLevel() 
     {
+        particlesEndLevel.Play();
         toStopTimer = false;
         timer = TimerHelper.Create();
     }
