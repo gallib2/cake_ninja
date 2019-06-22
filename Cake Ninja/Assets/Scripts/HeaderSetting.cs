@@ -45,8 +45,8 @@ public class HeaderSetting : MonoBehaviour
     {
         Debug.Log("GameManager.score" + GameManager.score);
 
-        goalText.text = "Goal: " + GameManager.currentGoal.ToString();
-        scoreText.text = "Score: " + GameManager.score.ToString();
+        goalText.text = GameManager.currentGoal.ToString();
+        scoreText.text = (GameManager.score + 1).ToString();
 
         //goal = GameManager.currentGoal;
         //score = GameManager.score;

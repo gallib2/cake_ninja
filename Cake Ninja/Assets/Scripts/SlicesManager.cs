@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class SlicesManager : MonoBehaviour
 {
+    // public AudioSource m_MyAudioSource;
+    public Slider sliderTimer;
     public int goal;
     private int minmumSize;
 
@@ -29,6 +31,8 @@ public class SlicesManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // m_MyAudioSource = GetComponent<AudioSource>();
+        // m_MyAudioSource.Play();
         sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
         goal = GameManager.currentGoal;
 
@@ -40,7 +44,8 @@ public class SlicesManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int timerOpp = 5 - (int)timer.Get();
+        int timerOpp = 8 - (int)timer.Get();
+        sliderTimer.value = timerOpp; //(int)timer.Get();
 
         timerText.text = "Timer: " + timerOpp;
 
@@ -111,6 +116,7 @@ public class SlicesManager : MonoBehaviour
 
     void GameOver()
     {
+       // m_MyAudioSource.Stop();
         DestroyAllLeftPieces();
         Instantiate(gameOverScreenPrefub);
         GameManager.GameOver();

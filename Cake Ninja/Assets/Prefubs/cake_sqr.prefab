@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8200570759069020075}
   - component: {fileID: 8200570759069020074}
   - component: {fileID: 5691775150322051421}
+  - component: {fileID: 8200017578141584291}
   m_Layer: 8
   m_Name: cake_sqr
   m_TagString: Untagged
@@ -74,12 +75,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 395e23196787d4757893670ef4a1db7f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7b0605e4d98db4c6da295d651c41c344, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.17, y: 6.26}
+  m_Size: {x: 9.77, y: 9.98}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -183,7 +184,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8200570759069020071}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -194,7 +195,7 @@ PolygonCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.17, y: 6.26}
-    newSize: {x: 4.17, y: 6.26}
+    newSize: {x: 9.77, y: 9.98}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -219,3 +220,19 @@ PolygonCollider2D:
       - {x: 0.72499996, y: -1.7199999}
       - {x: 0.955, y: -1.54}
       - {x: 0.98499995, y: -1.37}
+--- !u!58 &8200017578141584291
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8200570759069020071}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 4.41
