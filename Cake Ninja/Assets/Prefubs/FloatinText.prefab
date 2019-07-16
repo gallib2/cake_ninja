@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5089114792734799563}
   - component: {fileID: 6423330185678659995}
   - component: {fileID: 4176104326113442654}
+  - component: {fileID: 4824047540482703362}
   m_Layer: 0
   m_Name: FloatinText
   m_TagString: Untagged
@@ -91,7 +92,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 49068c7ef29754d01b3c8c63f2521713, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4287450361
+    rgba: 4278444543
 --- !u!114 &4176104326113442654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,3 +105,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9d30429960b499fbcef9a0e8cb8c61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyTime: 2
+--- !u!95 &4824047540482703362
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4810024352755211371}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6ec218a934f2546609d0b43368a1ad63, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
