@@ -9,11 +9,9 @@ public class HeaderSetting : MonoBehaviour
 {
     //public GameObject prefab;
     public GameObject[] prefabs;
-    public Text scoreText;
     public Text goalText;
 
     int goal;
-    int score;
 
     private void OnEnable()
     {
@@ -30,7 +28,7 @@ public class HeaderSetting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //goal = GameManager.currentGoal;
+        goal = GameManager.currentGoal;
     }
 
     private void GoalChange(int newGoal)
@@ -40,9 +38,6 @@ public class HeaderSetting : MonoBehaviour
 
     private void NextLevel()
     {
-        Debug.Log("GameManager.score" + GameManager.score);
-
         goalText.text = GameManager.currentGoal.ToString();
-        //scoreText.text = (GameManager.score + 1).ToString();
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class SlicesManager : MonoBehaviour
 {
-    public delegate void ScoreChange(int score);
+    public delegate void ScoreChange(int score, ScoreLevel scoreLevel);
 
     public static event ScoreChange OnScoreChange;
 
@@ -44,8 +44,16 @@ public class SlicesManager : MonoBehaviour
         goal = GameManager.currentGoal;
 
         timer = TimerHelper.Create();
+    }
 
-        Debug.Log("Goal is: " + goal);
+    private void OnEnable()
+    {
+        GameManager.OnNextLevel += NextLevel;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnNextLevel -= NextLevel;
     }
 
     // Update is called once per frame
@@ -53,8 +61,6 @@ public class SlicesManager : MonoBehaviour
     {
         int timerOpp = 8 - (int)timer.Get();
         sliderTimer.value = timerOpp; //(int)timer.Get();
-
-        timerText.text = "Timer: " + timerOpp;
 
         if (!toStopTimer && timerOpp < 0)
         {
@@ -103,22 +109,47 @@ public class SlicesManager : MonoBehaviour
 
     private void CalculateNewScore()
     {
+        bool isHaveScoreLevel = false;
+        ScoreLevel playerScoreLevel = ScoreLevel.Regular;
+
+        ScoreLevel[] ScoreLevelArr = (ScoreLevel[])Enum.GetValues(typeof(ScoreLevel));
+
+        // we need to run on the array from the biggest value to the lower.
+        foreach (ScoreLevel scoreLevelEnum in ScoreLevelArr)
+        {
+            if(scoreLevelEnum != ScoreLevel.Regular)
+            {
+                int scoreLevel = (int)scoreLevelEnum;
+                isHaveScoreLevel = CheckScoreLevel(scoreLevel);
+
+                //Debug.Log("scoreLevel " + scoreLevel); Debug.Log("isHaveScoreLevel " + isHaveScoreLevel); Debug.Log("scoreLevelEnum " + scoreLevelEnum);
+
+                if (isHaveScoreLevel)
+                {
+                    playerScoreLevel = scoreLevelEnum;
+                    break;
+                }
+            }
+        }
+
+        int scoreToAdd = (int)Enum.Parse(typeof(ScorePointsByLevel), playerScoreLevel.ToString());
+
+        OnScoreChange?.Invoke(scoreToAdd, playerScoreLevel);
+    }
+
+    private bool CheckScoreLevel(int scoreLevel)
+    {
         int sliceSizeSupposedToBe = (int)originalSize / goal;
+        Debug.Log("originalSize " + originalSize); Debug.Log("sliceSizeSupposedToBe " + sliceSizeSupposedToBe); Debug.Log("scoreLevel " + scoreLevel);
 
-        const int awsomePercentage = 95;
-        const int greatePercentage = 90;
-        const int nicePercentage = 85;
-
-        bool isAwsome;
-
-        isAwsome = slicesSizeList.Any(currSize => {
-        int percentage = (currSize * 100) / sliceSizeSupposedToBe;
-
-            return percentage >= awsomePercentage;
+        return slicesSizeList.Any(currSize => {
+            double sliceSizeSupposedToBeInPercentage = (sliceSizeSupposedToBe / originalSize) * 100;
+            double currSizePercentage = ((double)currSize / originalSize) * 100;
+            Debug.Log("sliceSizeSupposedToBeInPercentage: " + sliceSizeSupposedToBeInPercentage); Debug.Log("currSizePercentage " + currSizePercentage);
+           
+            int difference = Mathf.Abs((int)sliceSizeSupposedToBeInPercentage - (int)currSizePercentage);
+            return difference <= scoreLevel;
         });
-
-        OnScoreChange?.Invoke(30);
-        //return 30;
     }
 
     void NextLevel() 
@@ -131,7 +162,8 @@ public class SlicesManager : MonoBehaviour
 
     void GameOver()
     {
-       // m_MyAudioSource.Stop();
+        // m_MyAudioSource.Stop();
+        toStopTimer = true;
         DestroyAllLeftPieces();
         Instantiate(gameOverScreenPrefub);
         GameManager.GameOver();
@@ -189,7 +221,8 @@ public class SlicesManager : MonoBehaviour
             Polygon2D poly = slicer.GetPolygon().ToWorldSpace(slicer.transform);
 
             originalSize = slicer.GetComponent<DemoSlicer2DInspectorTracker>().originalSize;
-            int currentSizeInt = (int)poly.GetArea();
+            int currentSizeInt = Mathf.FloorToInt((float)poly.GetArea()); //(int)poly.GetArea();
+
             Debug.Log("current size : " + currentSizeInt);
             slicesSizeList.Add(currentSizeInt);
 

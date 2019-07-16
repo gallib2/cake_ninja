@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static event Action OnNextLevel;
+    public static event Action OnGameOver;
 
     public delegate void GoalChange(int goal);
 
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
         goals.Add(2);
         currentGoal = goals.Last();
         score = 0;
-        //OnNextLevel?.Invoke();
+        OnNextLevel?.Invoke();
         OnGoalChange?.Invoke(currentGoal);
     }
 
@@ -59,14 +60,16 @@ public class GameManager : MonoBehaviour
         currentGoal = goals.Last();
         score = goals.Count - 1;
 
-        //OnNextLevel?.Invoke();
+        OnNextLevel?.Invoke();
+
         OnGoalChange?.Invoke(currentGoal);
     }
 
     public static void GameOver()
     {
         isGameOver = true;
-        OnNextLevel?.Invoke();
+        OnGameOver?.Invoke();
+        //OnNextLevel?.Invoke();
     }
 
     public void PlayAgain()
