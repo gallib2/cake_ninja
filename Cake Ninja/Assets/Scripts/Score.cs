@@ -42,7 +42,9 @@ public class Score : MonoBehaviour
     private void ShowFloatingText(ScoreLevel scoreLevel)
     {
         GameObject floatingText = Instantiate(floatingTextPrefub);
-        floatingText.GetComponent<TextMesh>().text = scoreLevel.ToString();
+        TextMesh floatingTextMesh = floatingText.GetComponent<TextMesh>();
+        floatingTextMesh.text = scoreLevel.ToString();
+        //floatingTextMesh.color
     }
 
     private void NextLevel()
@@ -54,6 +56,7 @@ public class Score : MonoBehaviour
 
     private void GameOver()
     {
+        Highscores.AddNewHighScore("poly", score);
         SetScore(initialScore);
     }
 
