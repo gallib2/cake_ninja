@@ -11,6 +11,12 @@ public class SlicesManager : MonoBehaviour
 
     public static event ScoreChange OnScoreChange;
 
+    public float timerPenelty;
+    public float timerReward;
+    private float BaseTime = 20;
+    [SerializeField]
+    private float BaseTimerMax = 20;
+
     List<int> slicesSizeList;
     // public AudioSource m_MyAudioSource;
     public Slider sliderTimer;
@@ -34,6 +40,8 @@ public class SlicesManager : MonoBehaviour
     GameObject sliceableObjects;
 
     public int slicesCount = 0;
+
+    private float timerOpp;
 
     // Start is called before the first frame update
     void Start()
@@ -59,12 +67,14 @@ public class SlicesManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int timerOpp = 8 - (int)timer.Get();
+
+        timerOpp = BaseTime - timer.Get();
+       // Mathf.Clamp(timerOpp, 0, 8);
         sliderTimer.value = timerOpp; //(int)timer.Get();
 
         if (!toStopTimer && timerOpp < 0)
         {
-            Debug.Log("times up! ");
+         //   Debug.Log("times up! ");
             GameOver();
             toStopTimer = true;
         }
@@ -89,7 +99,11 @@ public class SlicesManager : MonoBehaviour
 
                 CalculateNewScore();
 
+                //note add a small delay after the cake is cut 
                 DestroyAllLeftPieces();
+
+                GoodSlice();
+
                 GameObject cake = GetRandomCake();
                 Instantiate(cake, sliceableObjects.transform, true); // create new cake
 
@@ -98,14 +112,43 @@ public class SlicesManager : MonoBehaviour
             }
             else if (!isAllSlicesEqual && !GameManager.isGameOver)
             {
-                GameOver();
+                DestroyAllLeftPieces();
+
+                GameObject cake = GetRandomCake();
+                Instantiate(cake, sliceableObjects.transform, true); // create new cake
+
+                GameManager.NextLevel();
+                NextLevel();
+
+                Debug.Log("BadSlice");
+                BadSlice();
+               
+                // dont end the game when 
+                //GameOver();
             }
         }
+
         else if (slicesCount > goal)
         {
+
             GameOver();
         }
     }
+
+
+    private void BadSlice()
+    {      
+        BaseTime -= timerPenelty;
+    }
+
+    private void GoodSlice()
+    {
+        
+        BaseTime += timerReward;
+        if (BaseTime > BaseTimerMax)
+            BaseTime = BaseTimerMax;
+    }
+
 
     private void CalculateNewScore()
     {
@@ -140,12 +183,12 @@ public class SlicesManager : MonoBehaviour
     private bool CheckScoreLevel(int scoreLevel)
     {
         int sliceSizeSupposedToBe = (int)originalSize / goal;
-        Debug.Log("originalSize " + originalSize); Debug.Log("sliceSizeSupposedToBe " + sliceSizeSupposedToBe); Debug.Log("scoreLevel " + scoreLevel);
+      //  Debug.Log("originalSize " + originalSize); Debug.Log("sliceSizeSupposedToBe " + sliceSizeSupposedToBe); Debug.Log("scoreLevel " + scoreLevel);
 
         return slicesSizeList.Any(currSize => {
             double sliceSizeSupposedToBeInPercentage = (sliceSizeSupposedToBe / originalSize) * 100;
             double currSizePercentage = ((double)currSize / originalSize) * 100;
-            Debug.Log("sliceSizeSupposedToBeInPercentage: " + sliceSizeSupposedToBeInPercentage); Debug.Log("currSizePercentage " + currSizePercentage);
+           // Debug.Log("sliceSizeSupposedToBeInPercentage: " + sliceSizeSupposedToBeInPercentage); Debug.Log("currSizePercentage " + currSizePercentage);
            
             int difference = Mathf.Abs((int)sliceSizeSupposedToBeInPercentage - (int)currSizePercentage);
             return difference <= scoreLevel;
@@ -154,6 +197,11 @@ public class SlicesManager : MonoBehaviour
 
     void NextLevel() 
     {
+        
+        if (BaseTimerMax > 2)
+        {
+            BaseTimerMax--;
+        }
         particlesEndLevel.Play();
         toStopTimer = false;
         timer = TimerHelper.Create();
@@ -162,6 +210,8 @@ public class SlicesManager : MonoBehaviour
 
     void GameOver()
     {
+        BaseTimerMax = 20;
+        BaseTime = BaseTimerMax;
         // m_MyAudioSource.Stop();
         toStopTimer = true;
         DestroyAllLeftPieces();
@@ -185,7 +235,7 @@ public class SlicesManager : MonoBehaviour
         slicesSizeList = GetSlicesSizesList();
         int sliceSizeSupposedToBe = (int)originalSize / goal;
 
-        minmumSize = sliceSizeSupposedToBe / 2;
+        minmumSize = sliceSizeSupposedToBe / 4;
 
         isAlmostEqual = !slicesSizeList.Any(currSize => currSize < minmumSize);
 
@@ -223,7 +273,7 @@ public class SlicesManager : MonoBehaviour
             originalSize = slicer.GetComponent<DemoSlicer2DInspectorTracker>().originalSize;
             int currentSizeInt = Mathf.FloorToInt((float)poly.GetArea()); //(int)poly.GetArea();
 
-            Debug.Log("current size : " + currentSizeInt);
+          //  Debug.Log("current size : " + currentSizeInt);
             slicesSizeList.Add(currentSizeInt);
 
             sliced = slicer.sliceCounter;

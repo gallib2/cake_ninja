@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public static int score = 0;
     public static bool isGameOver = false;
 
-
+    TimerHelper timer;
     static public GameManager instance;
 
     // Start is called before the first frame update
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     private void StartGameSettings()
     {
+        timer = TimerHelper.Create();
         goals.Add(2);
         currentGoal = goals.Last();
         score = 0;
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = false;
         goals.Clear();
-
+        
         StartGameSettings();
 
 

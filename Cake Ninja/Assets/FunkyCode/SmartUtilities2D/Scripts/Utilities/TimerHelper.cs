@@ -9,7 +9,17 @@ public class TimerHelper {
 		Reset();
 	}
 
-	public void Reset() {
+    public void TimeAdd( float amount)
+    {
+        time += amount;
+    }
+
+    public void TimeReduce(float amount)
+    {
+        time -= amount;
+    }
+
+    public void Reset() {
 		time = Time.realtimeSinceStartup;
 	}
 
