@@ -7,15 +7,22 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static event Action OnNextLevel;
+    public static event Action OnGameOver;
+
+    public delegate void GoalChange(int goal);
+
+    public static event GoalChange OnGoalChange;
 
     //TimerHelper timer;
     //float timerRequired = 1f;
 
+    public List<int> slicesSizeList;
     public static List<int> goals = new List<int>();
     public static int currentGoal;
     public static int score = 0;
     public static bool isGameOver = false;
 
+    TimerHelper timer;
     static public GameManager instance;
 
     // Start is called before the first frame update
@@ -36,55 +43,41 @@ public class GameManager : MonoBehaviour
 
     private void StartGameSettings()
     {
-        Debug.Log("start game settings");
+        timer = TimerHelper.Create();
         goals.Add(2);
         currentGoal = goals.Last();
         score = 0;
         OnNextLevel?.Invoke();
+        OnGoalChange?.Invoke(currentGoal);
     }
 
-    private void Update()
-    {
-
-
-
-    }
-
+    // TODO event
     public static void NextLevel()
     {
-        Debug.Log("--------------in next level ");
+        int nextGoal = GetNextGoal();
 
-        int nextGoal;
-        //bool isNumberExistInGoals = false;
-        nextGoal = UnityEngine.Random.Range(4, 6);
-        bool isGoalOdd = nextGoal % 2 != 0;
-        if (isGoalOdd)
-        {
-            nextGoal += 1;
-        }
-
-        goals.Add(nextGoal); // TODO G random, even and not exist in the list
+        goals.Add(nextGoal);
 
         currentGoal = goals.Last();
         score = goals.Count - 1;
 
         OnNextLevel?.Invoke();
+
+        OnGoalChange?.Invoke(currentGoal);
     }
 
     public static void GameOver()
     {
         isGameOver = true;
-        OnNextLevel?.Invoke();
-        //gameOverScreenPrefub = _gameOverScreenPrefub;
+        OnGameOver?.Invoke();
+        //OnNextLevel?.Invoke();
     }
 
     public void PlayAgain()
     {
         isGameOver = false;
         goals.Clear();
-
-        Debug.Log("goals " + goals.Count);
-
+        
         StartGameSettings();
 
 
@@ -92,5 +85,18 @@ public class GameManager : MonoBehaviour
         //{
         //    Destroy(gameOverScreenPrefub.gameObject);
         //}
+    }
+
+    // goal need to be even
+    private static int GetNextGoal()
+    {
+        int goal = UnityEngine.Random.Range(4, 6);
+        bool isGoalOdd = goal % 2 != 0;
+        if (isGoalOdd)
+        {
+            goal += 1;
+        }
+
+        return goal;
     }
 }
