@@ -57,7 +57,7 @@ public class Score : MonoBehaviour
     {
         int tooManySlicesIndex = 3;
 
-        int index = isTooManySlices ? tooManySlicesIndex : Random.Range(0, negativeFeedbackPrefubs.Length);
+        int index = isTooManySlices ? tooManySlicesIndex : Random.Range(0, negativeFeedbackPrefubs.Length - 1);
 
         if (negativeFeedbackPrefubs[index])
         {
