@@ -8,8 +8,13 @@ using UnityEngine.UI;
 public class SlicesManager : MonoBehaviour
 {
     public delegate void ScoreChange(int score, ScoreLevel scoreLevel);
+    public delegate void BadSliceHandler(bool isTooManySlices);
 
     public static event ScoreChange OnScoreChange;
+    public static event BadSliceHandler OnBadSlice;
+
+    public int currentLevel;
+    bool test = true;
 
     public float timerPenelty;
     public float timerReward;
@@ -92,6 +97,7 @@ public class SlicesManager : MonoBehaviour
 
         if (slicesCount == goal)
         {
+            Debug.Log("slicesCount= "+ slicesCount);
             bool isAllSlicesEqual = IsAllSlicesAreAlmostEqual();
 
             if (isAllSlicesEqual)
@@ -121,7 +127,7 @@ public class SlicesManager : MonoBehaviour
                 NextLevel();
 
                 Debug.Log("BadSlice");
-                BadSlice();
+                BadSlice(false);
                
                 // dont end the game when 
                 //GameOver();
@@ -130,15 +136,39 @@ public class SlicesManager : MonoBehaviour
 
         else if (slicesCount > goal)
         {
+            Debug.Log("BadSlice slicesCount > goal");
+            DestroyAllLeftPieces();
 
-            GameOver();
+            GameObject cake = GetRandomCake();
+            Instantiate(cake, sliceableObjects.transform, true); // create new cake
+
+            GameManager.NextLevel();
+            NextLevel();
+
+            BadSlice(true);
+            //OnBadSlice?.Invoke();
+
+            //if(test)
+            //{
+            //    test = false;
+
+            //    OnBadSlice?.Invoke();
+            //    GameManager.NextLevel();
+            //    NextLevel();
+            //}
+            ////BadSlice();
+            /// 
+            /// 
+            //GameOver();
+
         }
     }
 
 
-    private void BadSlice()
+    private void BadSlice(bool toManySlices)
     {      
         BaseTime -= timerPenelty;
+        OnBadSlice?.Invoke(toManySlices);
     }
 
     private void GoodSlice()
@@ -197,7 +227,9 @@ public class SlicesManager : MonoBehaviour
 
     void NextLevel() 
     {
-        
+        //prevLevel = currentLevel;
+        test = true;
+        currentLevel++;
         if (BaseTimerMax > 2)
         {
             BaseTimerMax--;

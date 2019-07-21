@@ -10,7 +10,9 @@ public class Score : MonoBehaviour
     public int regularScoreToAdd = 10;
 
     public Text scoreText;
-    public GameObject floatingTextPrefub;
+    public GameObject[] floatingTextPrefubs;
+    public GameObject[] negativeFeedbackPrefubs;
+    GameObject floatingText;
 
 
     private void OnEnable()
@@ -18,6 +20,7 @@ public class Score : MonoBehaviour
         GameManager.OnNextLevel += NextLevel;
         GameManager.OnGameOver += GameOver;
         SlicesManager.OnScoreChange += ScoreChanged;
+        SlicesManager.OnBadSlice += BadSlice;
     }
 
     private void OnDisable()
@@ -25,31 +28,56 @@ public class Score : MonoBehaviour
         GameManager.OnNextLevel -= NextLevel;
         GameManager.OnGameOver -= GameOver;
         SlicesManager.OnScoreChange -= ScoreChanged;
+        SlicesManager.OnBadSlice -= BadSlice;
+    }
+
+    private void Update()
+    {
+        // if the feedback animation is over destroy
+        if(floatingText && Mathf.Approximately(floatingText.transform.localScale.x, 0))
+        {
+            Destroy(floatingText);
+        }
     }
 
     private void ScoreChanged(int scoreToAdd, ScoreLevel scoreLevel)
     {
         int newScore = score + scoreToAdd;
+        int index = Random.Range(0, floatingTextPrefubs.Length);
 
         SetScore(newScore);
-        if(floatingTextPrefub && scoreLevel != ScoreLevel.Regular)
+        if(floatingTextPrefubs[index] && scoreLevel != ScoreLevel.Regular)
         {
-            ShowFloatingText(scoreLevel);
+            ShowFloatingText(scoreLevel, floatingTextPrefubs[index]);
         }
 
     }
 
-    private void ShowFloatingText(ScoreLevel scoreLevel)
+    private void BadSlice(bool isTooManySlices)
     {
-        GameObject floatingText = Instantiate(floatingTextPrefub);
-        TextMesh floatingTextMesh = floatingText.GetComponent<TextMesh>();
-        floatingTextMesh.text = scoreLevel.ToString();
+        int tooManySlicesIndex = 3;
+
+        int index = isTooManySlices ? tooManySlicesIndex : Random.Range(0, negativeFeedbackPrefubs.Length);
+
+        if (negativeFeedbackPrefubs[index])
+        {
+            ShowFloatingText(ScoreLevel.Regular, negativeFeedbackPrefubs[index]);
+        }
+    }
+
+    private void ShowFloatingText(ScoreLevel scoreLevel, GameObject floatingTextPrefub)
+    {
+        floatingText = Instantiate(floatingTextPrefub);
+        //TextMesh floatingTextMesh = floatingText.GetComponent<TextMesh>();
+        //floatingTextMesh.text = scoreLevel.ToString();
         //floatingTextMesh.color
     }
 
     private void NextLevel()
     {
         int newScore = score + regularScoreToAdd;
+
+        //Destroy(floatingText);
 
         SetScore(newScore);
     }
