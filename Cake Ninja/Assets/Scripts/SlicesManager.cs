@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SlicesManager : MonoBehaviour
 {
@@ -247,10 +248,12 @@ public class SlicesManager : MonoBehaviour
         // m_MyAudioSource.Stop();
         toStopTimer = true;
         DestroyAllLeftPieces();
-        Instantiate(gameOverScreenPrefub);
+        //Instantiate(gameOverScreenPrefub);
         GameManager.GameOver();
-        GameObject cake = GetRandomCake();
-        Instantiate(cake, sliceableObjects.transform, true);
+        SceneManager.LoadScene(2);
+        //GameObject cake = GetRandomCake();
+        //Instantiate(cake, sliceableObjects.transform, true);
+
     }
 
     void DestroyAllLeftPieces()

@@ -2540,6 +2540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac5e23a45b544c108252fc6f4045c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevel: 0
   timerPenelty: 1
   timerReward: 2
   BaseTimerMax: 20

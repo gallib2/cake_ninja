@@ -5,11 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class StartMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    const int gamoverScreenIndex = 2;
 
     // Update is called once per frame
     void Update()
@@ -23,6 +19,12 @@ public class StartMenu : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
+
+        if (SceneManager.GetActiveScene().buildIndex == gamoverScreenIndex)
+        {
+            nextScene = 1;
+        }
+        SceneManager.LoadScene(nextScene);
     }
 }
