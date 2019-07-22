@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Score : MonoBehaviour
 {
     public int initialScore = 10;
-    public int score = 10;
+    public static int score = 10;
     public int regularScoreToAdd = 10;
 
     public Text scoreText;
@@ -29,6 +29,11 @@ public class Score : MonoBehaviour
         GameManager.OnGameOver -= GameOver;
         SlicesManager.OnScoreChange -= ScoreChanged;
         SlicesManager.OnBadSlice -= BadSlice;
+    }
+
+    private void Start()
+    {
+        score = 0;
     }
 
     private void Update()
@@ -85,7 +90,7 @@ public class Score : MonoBehaviour
     private void GameOver()
     {
         Highscores.AddNewHighScore("poly", score);
-        SetScore(initialScore);
+        //SetScore(initialScore);
     }
 
     private void SetScore(int scoreToSet)
