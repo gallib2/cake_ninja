@@ -14,6 +14,9 @@ public class SlicesManager : MonoBehaviour
     public static event ScoreChange OnScoreChange;
     public static event BadSliceHandler OnBadSlice;
 
+    public AudioSource audioSource;
+    public AudioClip nextLevelSound;
+
     public int currentLevel;
     bool test = true;
 
@@ -52,6 +55,7 @@ public class SlicesManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         // m_MyAudioSource = GetComponent<AudioSource>();
         // m_MyAudioSource.Play();
         sliceableObjects = GameObject.FindGameObjectWithTag("SliceableObjects");
@@ -230,11 +234,12 @@ public class SlicesManager : MonoBehaviour
     {
         //prevLevel = currentLevel;
         test = true;
+        audioSource.PlayOneShot(nextLevelSound);
         currentLevel++;
-        if (BaseTimerMax > 2)
-        {
-            BaseTimerMax--;
-        }
+        //if (BaseTimerMax > 2)
+        //{
+        //    BaseTimerMax--;
+        //}
         particlesEndLevel.Play();
         toStopTimer = false;
         timer = TimerHelper.Create();
