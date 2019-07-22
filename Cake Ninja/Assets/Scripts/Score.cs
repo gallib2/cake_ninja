@@ -9,9 +9,13 @@ public class Score : MonoBehaviour
     public static int score = 10;
     public int regularScoreToAdd = 10;
 
+    AudioSource audioSource;
+
     public Text scoreText;
     public GameObject[] floatingTextPrefubs;
+    public AudioClip[] positiveSound;
     public GameObject[] negativeFeedbackPrefubs;
+    public AudioClip[] negativeSound;
     GameObject floatingText;
 
 
@@ -34,6 +38,7 @@ public class Score : MonoBehaviour
     private void Start()
     {
         score = 0;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -54,6 +59,7 @@ public class Score : MonoBehaviour
         if(floatingTextPrefubs[index] && scoreLevel != ScoreLevel.Regular)
         {
             ShowFloatingText(scoreLevel, floatingTextPrefubs[index]);
+            audioSource.PlayOneShot(positiveSound[index]);
         }
 
     }
@@ -67,6 +73,7 @@ public class Score : MonoBehaviour
         if (negativeFeedbackPrefubs[index])
         {
             ShowFloatingText(ScoreLevel.Regular, negativeFeedbackPrefubs[index]);
+            audioSource.PlayOneShot(negativeSound[index]);
         }
     }
 

@@ -7,6 +7,9 @@ public class StartMenu : MonoBehaviour
 {
     const int gamoverScreenIndex = 2;
 
+    public AudioClip buttonClicked;
+    public AudioSource audioSource;
+
     // Update is called once per frame
     void Update()
     {
@@ -19,6 +22,7 @@ public class StartMenu : MonoBehaviour
 
     public void StartGame()
     {
+        audioSource.PlayOneShot(buttonClicked);
         int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
 
         if (SceneManager.GetActiveScene().buildIndex == gamoverScreenIndex)
