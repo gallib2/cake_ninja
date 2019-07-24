@@ -22,9 +22,11 @@ public class SlicesManager : MonoBehaviour
 
     public float timerPenelty;
     public float timerReward;
-    private float BaseTime = 20;
+    public float BaseTime = 20;
+    private bool badSliceOccur = false;
     [SerializeField]
     private float BaseTimerMax = 20;
+    const float BaseTimerMaxInitial = 20;
 
     List<int> slicesSizeList;
     // public AudioSource m_MyAudioSource;
@@ -171,17 +173,19 @@ public class SlicesManager : MonoBehaviour
 
 
     private void BadSlice(bool toManySlices)
-    {      
-        BaseTime -= timerPenelty;
+    {
+        badSliceOccur = true;
+        //BaseTime -= timerPenelty;
+        BaseTime = sliderTimer.value;// BaseTimerMax;
         OnBadSlice?.Invoke(toManySlices);
     }
 
     private void GoodSlice()
     {
-        
-        BaseTime += timerReward;
-        if (BaseTime > BaseTimerMax)
-            BaseTime = BaseTimerMax;
+        //BaseTime += timerReward;
+        BaseTime = sliderTimer.value + BaseTimerMaxInitial / 4; // sliderTimer.value + sliderTimer.value / 2;
+        if (BaseTime > BaseTimerMaxInitial)
+            BaseTime = BaseTimerMaxInitial;
     }
 
 
@@ -236,13 +240,18 @@ public class SlicesManager : MonoBehaviour
         test = true;
         audioSource.PlayOneShot(nextLevelSound);
         currentLevel++;
-        //if (BaseTimerMax > 2)
-        //{
-        //    BaseTimerMax--;
-        //}
+        if (BaseTimerMax > 2)
+        {
+            BaseTimerMax--;
+        }
         particlesEndLevel.Play();
         toStopTimer = false;
-        timer = TimerHelper.Create();
+        if(!badSliceOccur)
+        {
+            timer = TimerHelper.Create();
+        }
+
+        badSliceOccur = false;
     }
 
 

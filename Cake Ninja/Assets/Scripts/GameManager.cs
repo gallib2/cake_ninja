@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public static event GoalChange OnGoalChange;
 
+    public static string playerName = "soom"; // TODO G
+
     //TimerHelper timer;
     //float timerRequired = 1f;
 

@@ -2650,8 +2650,8 @@ MonoBehaviour:
   audioSource: {fileID: 1437217053105183}
   nextLevelSound: {fileID: 8300000, guid: 5eda3f41fc0b24ce0b0c5b91d22ce34b, type: 3}
   currentLevel: 0
-  timerPenelty: 1
-  timerReward: 2
+  timerPenelty: 5
+  timerReward: 5
   BaseTimerMax: 20
   sliderTimer: {fileID: 1542509673}
   goal: 4
