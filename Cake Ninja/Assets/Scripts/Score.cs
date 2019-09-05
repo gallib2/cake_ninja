@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    public int initialScore = 10;
+    public int initialScore = 0;
     public static int score = 10;
     public int regularScoreToAdd = 10;
 
@@ -21,10 +21,13 @@ public class Score : MonoBehaviour
 
     private void OnEnable()
     {
+      
         GameManager.OnNextLevel += NextLevel;
         GameManager.OnGameOver += GameOver;
         SlicesManager.OnScoreChange += ScoreChanged;
         SlicesManager.OnBadSlice += BadSlice;
+
+
     }
 
     private void OnDisable()
@@ -33,11 +36,14 @@ public class Score : MonoBehaviour
         GameManager.OnGameOver -= GameOver;
         SlicesManager.OnScoreChange -= ScoreChanged;
         SlicesManager.OnBadSlice -= BadSlice;
+
+      
+
     }
 
     private void Start()
     {
-        score = 0;
+        score = 0;       
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -87,9 +93,11 @@ public class Score : MonoBehaviour
 
     private void NextLevel()
     {
-        int newScore = score + regularScoreToAdd;
+        int newScore = score;
 
         //Destroy(floatingText);
+
+        
 
         SetScore(newScore);
     }
@@ -97,12 +105,17 @@ public class Score : MonoBehaviour
     private void GameOver()
     {
         Highscores.AddNewHighScore("poly", score);
+
         //SetScore(initialScore);
     }
 
     private void SetScore(int scoreToSet)
     {
         score = scoreToSet;
+
+
+       
+
         scoreText.text = score.ToString();
     }
 }

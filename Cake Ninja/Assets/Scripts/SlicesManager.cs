@@ -33,6 +33,8 @@ public class SlicesManager : MonoBehaviour
     private int minmumSize;
     public ParticleSystem particlesEndLevel;
 
+    public float timeLeft;
+    
     public Text timerText;
 
     TimerHelper timer;
@@ -78,9 +80,16 @@ public class SlicesManager : MonoBehaviour
     void Update()
     {
 
-        timerOpp = BaseTime - timer.Get();
+        timeLeft -= Time.deltaTime;
+        if (timeLeft < 0)
+        {
+            GameOver();
+
+        }
+
+            timerOpp = BaseTime - timer.Get();
        // Mathf.Clamp(timerOpp, 0, 8);
-        sliderTimer.value = timerOpp; //(int)timer.Get();
+        sliderTimer.value =  timeLeft; //(int)timer.Get();
 
         if (!toStopTimer && timerOpp < 0)
         {
@@ -102,7 +111,7 @@ public class SlicesManager : MonoBehaviour
 
         if (slicesCount == goal)
         {
-            Debug.Log("slicesCount= "+ slicesCount);
+           // Debug.Log("slicesCount= "+ slicesCount);
             bool isAllSlicesEqual = IsAllSlicesAreAlmostEqual();
 
             if (isAllSlicesEqual)
@@ -170,18 +179,20 @@ public class SlicesManager : MonoBehaviour
     }
 
 
+
+
     private void BadSlice(bool toManySlices)
     {      
-        BaseTime -= timerPenelty;
+        timeLeft -= timerPenelty;
         OnBadSlice?.Invoke(toManySlices);
     }
 
     private void GoodSlice()
     {
-        
-        BaseTime += timerReward;
-        if (BaseTime > BaseTimerMax)
-            BaseTime = BaseTimerMax;
+
+        timeLeft += timerReward;
+        if (timeLeft > BaseTimerMax)
+            timeLeft = BaseTimerMax;
     }
 
 
@@ -248,6 +259,7 @@ public class SlicesManager : MonoBehaviour
 
     void GameOver()
     {
+        timeLeft = 20;
         BaseTimerMax = 20;
         BaseTime = BaseTimerMax;
         // m_MyAudioSource.Stop();
@@ -317,6 +329,14 @@ public class SlicesManager : MonoBehaviour
             slicesSizeList.Add(currentSizeInt);
 
             sliced = slicer.sliceCounter;
+
+            for (int i = 0; i < slicesSizeList.Count; i++)
+            {
+                if (slicesSizeList[i] >= 0.2f)
+                {
+                    slicesSizeList.Remove(i);
+                }
+            }
         }
 
         return slicesSizeList;
